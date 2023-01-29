@@ -4,7 +4,9 @@ const catchAsync = require("../handlers/catchAsync");
 const AppError = require("../handlers/appError");
 const postService = require("../services/post");
 const fs = require("fs");
-
+/**
+ * @namespace post
+ */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const filePath = path.join(__dirname, "../", "../", "public", "posts");
@@ -31,7 +33,13 @@ const multerPostHandler = multer({
 });
 
 exports.uploadPost = multerPostHandler.single("file");
-
+/**
+ * ## CreatePost
+ * `post`
+ * ### body -
+ * * `discription` : description of body
+ * * `title` : title of body
+ */
 exports.CreatePost = catchAsync(async (req, res) => {
   const { discription, title } = req.body;
   if (!discription || !title)
@@ -68,8 +76,24 @@ exports.findAllPosts = catchAsync(async (req, res) => {
     .status(200)
     .send({ data: { posts }, message: "post fetch sucessfully" });
 });
-
-exports.deletePost = catchAsync(async (req, res) => {
+/**
+ * `/post`
+ *
+ * <div>
+ * Delete post
+ *  </div>
+ *
+ * <h5> body </h5>
+ *
+ * * `user` {id:string} : this is user id
+ *
+ * ### param
+ *
+ * * `id` {string}
+ * @param {*} req
+ * @param {*} res
+ */
+async function deletePost(req, res) {
   const userId = req.user.id;
   const postId = req.params.id;
   const post = await postService.findOne({ _id: postId });
@@ -83,4 +107,5 @@ exports.deletePost = catchAsync(async (req, res) => {
   await post.remove();
 
   return res.status(200).send({ message: "file deleted successfully" });
-});
+}
+exports.deletePost = catchAsync(deletePost);

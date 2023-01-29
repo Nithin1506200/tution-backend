@@ -1,7 +1,10 @@
 const app = require("./app");
 const dbConnection = require("./config/dbConfig");
 const port = process.env.PORT || 3091;
-
+/**
+ * @async
+ * this is dummy function
+ */
 async function connect() {
   try {
     await dbConnection();

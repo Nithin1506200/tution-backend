@@ -30,5 +30,8 @@ app.all("*", async (req, res, next) => {
 });
 
 app.use(globalErrorHandler);
-
+/**
+ * this is dummy function
+ */
+function dummy() {}
 module.exports = app;
